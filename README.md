@@ -9,8 +9,8 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 ├── install.sh          # Instalador interactivo
 ├── scripts/            # Scripts utilitarios
 │   ├── d.sh           # Navegación rápida
-│   ├── m.sh           # Alias tmux
-│   ├── music_shuffle.sh  # Reproductor musical
+│   ├── music-all.sh     # Reproducir toda la musica
+│   ├── music-shuffle.sh # Reproductor musical aleatorio
 │   ├── share-send.sh  # Enviar archivos
 │   └── share-get.sh   # Recibir archivos
 └── dotfiles/          # Configuraciones (stow)
@@ -48,8 +48,8 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 | Script | Descripción |
 |--------|-------------|
 | `d` | Navegación rápida a directorios |
-| `m` | Alias para tmux |
-| `music_shuffle` | Reproductor musical aleatorio |
+| `music-all` | Reproducir toda la musica |
+| `music-shuffle` | Reproductor musical aleatorio |
 | `share-send` | Enviar archivos por red |
 | `share-get` | Recibir archivos por red |
 
@@ -108,7 +108,7 @@ bash install.sh
 
   BASE
   [1] Base (Termux + bashrc)
-  [2] Scripts (d, m, share-send, share-get, music_shuffle, md2pdf, md2epub, md2docx)
+  [2] Scripts (d, music-all, music-shuffle, share-send, share-get, md2pdf, md2epub, md2docx)
 
   HERRAMIENTAS
   [3] OpenCode (IA CLI)
@@ -179,10 +179,10 @@ share-send archivo.txt
 share-get
 ```
 
-### music_shuffle
+### music-shuffle
 
 ```bash
-music_shuffle
+music-shuffle
 ```
 
 ### d
