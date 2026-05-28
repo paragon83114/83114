@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+cd ~/storage/music && fzf --multi --height 60% --border --prompt "Musica: " --header "Tab=marcar  Enter=reproducir  ESC=salir" --reverse --exact | while read -r f; do mpv "$f"; done
