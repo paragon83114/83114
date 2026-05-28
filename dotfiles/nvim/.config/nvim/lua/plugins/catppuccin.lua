@@ -1,0 +1,42 @@
+return {
+  "catppuccin/nvim",
+  name = "catppuccin",
+  priority = 1000,
+  config = function()
+    require("catppuccin").setup({
+      flavour = "mocha",
+      transparent_background = false,
+      term_colors = true,
+      styles = {
+        comments = { "italic" },
+        properties = { "italic" },
+        functions = { "bold" },
+        keywords = { "bold" },
+        operators = { "bold" },
+      },
+      color_overrides = {
+        mocha = {
+          background = "#1e1e2e",
+          surface0 = "#313244",
+          surface1 = "#181825",
+          overlay0 = "#6c7086",
+          text = "#cdd6f4",
+          subtext1 = "#bac2de",
+          subtext0 = "#a6adc8",
+          accent = "#89b4fa",
+          pink = "#f5c2e7",
+          mauve = "#cba6f7",
+          red = "#f38ba8",
+          peach = "#fab387",
+          yellow = "#f9e2af",
+          green = "#a6e3a1",
+          teal = "#94e2d5",
+          sky = "#89dceb",
+          sapphire = "#89b4fa",
+          lavender = "#b4befe",
+        },
+      },
+    })
+    vim.cmd.colorscheme("catppuccin-mocha")
+  end,
+}

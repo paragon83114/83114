@@ -9,7 +9,8 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 ├── install.sh          # Instalador interactivo
 ├── scripts/            # Scripts utilitarios
 │   ├── d.sh           # Diario personal
-│   ├── music-select.sh  # Seleccionar y reproducir musica
+│   ├── gmail-check.sh # Verificar correos no leidos
+│   ├── music-select.sh # Seleccionar y reproducir musica
 │   ├── music-shuffle.sh # Reproductor musical aleatorio
 │   ├── share-send.sh  # Enviar archivos
 │   └── share-get.sh   # Recibir archivos
@@ -18,13 +19,13 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 └── dotfiles/          # Configuraciones (stow)
     ├── bashrc/.bashrc
     ├── tmux/.tmux.conf
-    ├── termux/.termux/.termux.properties
+    ├── termux/.termux/
+    │    ├── termux.properties
+    │    └── fonts/font.ttf   # Fuente personalizada
     ├── atuin/.config/atuin/config.toml
     └── nvim/.config/nvim/
-        ├── init.lua
         └── lua/plugins/
-            ├── theme.lua
-            └── filemanager.lua
+            └── catppuccin.lua  # Tema Catppuccin Mocha
 ```
 
 ## Componentes Instalados
@@ -32,12 +33,13 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 ### Base
 - **bashrc**: Configuración de Bash con alias y funciones
 - **tmux**: Gestor de terminal multiplexado
+- **atuin**: Historial de comandos mejorado
 - **termux.properties**: Configuración de Termux
+- **font.ttf**: Fuente personalizada para Termux
 
 ### Herramientas
 - **Neovim**: Editor de texto con plugins
-  - theme.lua: Tema Catppuccin Mocha
-  - filemanager.lua: Integración con file explorer
+  - catppuccin.lua: Tema Catppuccin Mocha
 - **atuin**: Historial de comandos mejorado
 - **OpenCode**: CLI de Inteligencia Artificial
 - **mmx-cli**: Herramienta MiniMax AI
@@ -53,10 +55,12 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 | `d "texto"` | Añadir entrada al diario |
 | `d eval` | Procesar diario con IA |
 | `d del` | Borrar última entrada |
+| `gmail-check` | Correos no leidos en Gmail |
 | `music-select` | Seleccionar y reproducir musica |
 | `music-shuffle` | Reproductor musical aleatorio |
 | `share-send` | Enviar archivos por red |
 | `share-get` | Recibir archivos por red |
+| `md2pdf/md2epub/md2docx` | Convertir Markdown a PDF/EPUB/DOCX |
 
 ### Alias
 | Alias | Comando |
@@ -115,10 +119,9 @@ cd 83114
 # Desplegar dotfiles con stow
 stow --target="$HOME" */
 
-# Copiar scripts y crear symlinks
-cp -r scripts "$HOME/"
-for f in "$HOME/scripts"/*.sh; do
-    ln -sf "$f" "$PREFIX/bin/$(basename "$f" .sh)"
+# Crear symlinks de scripts en $PREFIX/bin
+for f in scripts/*.sh; do
+    ln -sf "$(pwd)/$f" "$PREFIX/bin/$(basename "$f" .sh)"
 done
 ```
 
@@ -135,7 +138,7 @@ bash install.sh
 
   BASE
   [1] Base (Termux + bashrc)
-  [2] Scripts (d=diario, music-select, music-shuffle, share-send, share-get, md2pdf, md2epub, md2docx)
+  [2] Scripts (d, gmail-check, music-select, music-shuffle, share-send, share-get, md2pdf, md2epub, md2docx)
 
   HERRAMIENTAS
   [3] OpenCode (IA CLI)
@@ -166,9 +169,10 @@ bash install.sh
 # Solo dotfiles
 stow --target="$HOME" */
 
-# Solo scripts
-cp -r scripts "$HOME/"
-chmod +x "$HOME/scripts"/*.sh
+# Solo scripts (symlinks a PREFIX/bin)
+for f in scripts/*.sh; do
+    ln -sf "$(pwd)/$f" "$PREFIX/bin/$(basename "$f" .sh)"
+done
 ```
 
 ## Gestión de Dotfiles con Stow

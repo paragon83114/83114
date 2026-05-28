@@ -28,9 +28,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 [ -n "${PREFIX:-}" ] || error "Este script es para Termux nativo."
 
 if command -v curl &>/dev/null; then
-    curl -s --connect-timeout 5 https://1.1.1.1 >/dev/null || error "Sin conexion a Internet."
+    curl -s --connect-timeout 5 http://1.1.1.1 >/dev/null || curl -s --connect-timeout 5 http://8.8.8.8 >/dev/null || error "Sin conexion a Internet."
 else
-    ping -c 1 -W 5 1.1.1.1 &>/dev/null || error "Sin conexion a Internet."
+    ping -c 1 -W 5 1.1.1.1 &>/dev/null || ping -c 1 -W 5 8.8.8.8 &>/dev/null || error "Sin conexion a Internet."
 fi
 
 instalar_si_falta() {
@@ -55,22 +55,15 @@ dotfiles_stow() {
     log "Aplicando dotfiles con stow..."
 
     for f in ~/.bashrc ~/.tmux.conf; do
-        if [ -f "$f" ] && [ ! -L "$f" ]; then
-            mv "$f" "${f}.bak.$(date +%s)"
-        fi
-        [ -L "$f" ] && rm "$f"
+        [ -f "$f" ] || [ -L "$f" ] && rm -f "$f"
     done
 
     for d in ~/.config/atuin ~/.config/nvim ~/.termux; do
-        if [ -d "$d" ] && [ ! -L "$d" ]; then
-            mv "$d" "${d}.bak.$(date +%s)"
-        fi
-        [ -L "$d" ] && rm "$d"
+        [ -d "$d" ] || [ -L "$d" ] && rm -rf "$d"
     done
 
-    for f in ~/bashrc ~/tmux.conf ~/config.toml ~/init.lua ~/lua ~/termux.properties; do
-        [ -e "$f" ] && rm -f "$f"
-    done
+    rm -f ~/bashrc ~/tmux.conf ~/.config/atuin/config.toml ~/.termux/termux.properties
+    rm -f ~/.bashrc.bak.* ~/.tmux.conf.bak.* 2>/dev/null || true
 
     cd "$SCRIPT_DIR/dotfiles"
     stow --target="$HOME" */
@@ -81,22 +74,10 @@ dotfiles_stow() {
 instalar_base() {
     log "Instalando base de Termux..."
 
-    if [ ! -d "$HOME/storage" ]; then
-        log "Configurando almacenamiento..."
-        termux-setup-storage
-    fi
-
     touch "$HOME/.hushlogin"
 
     log "Actualizando paquetes..."
     pkg update -y && pkg upgrade -y -o Dpkg::Options::="--force-confnew"
-
-    if [ ! -f "$HOME/.termux/font.ttf" ]; then
-        log "Descargando JetBrains Mono Nerd Font..."
-        mkdir -p "$HOME/.termux"
-        curl -L "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf" -o "$HOME/.termux/font.ttf"
-        termux-reload-settings
-    fi
 
     instalar_si_falta "lsd"
     instalar_si_falta "glow"
@@ -112,17 +93,27 @@ instalar_base() {
     instalar_stow
     dotfiles_stow
 
+    if [ ! -d "$HOME/storage" ]; then
+        log "Configurando almacenamiento..."
+        termux-setup-storage
+    fi
+
     log "Base instalada."
 }
 
 instalar_funciones() {
     log "Instalando scripts..."
 
-    cp -r "$SCRIPT_DIR/scripts" "$HOME/"
-    chmod +x "$HOME/scripts/"*.sh
+    shopt -s nullglob
+    local scripts=("$SCRIPT_DIR/scripts/"*.sh)
+    shopt -u nullglob
 
-    log "Creando enlaces en $PREFIX/bin..."
-    for script in "$HOME/scripts/"*.sh; do
+    if [ ${#scripts[@]} -eq 0 ]; then
+        warn "No se encontraron scripts en $SCRIPT_DIR/scripts/"
+        return 0
+    fi
+
+    for script in "${scripts[@]}"; do
         name=$(basename "$script" .sh)
         ln -sf "$script" "$PREFIX/bin/$name"
     done
@@ -162,20 +153,22 @@ instalar_opencode() {
     GLIBC_LD="$PREFIX/glibc/lib/ld-linux-aarch64.so.1"
     [ -f "$GLIBC_LD" ] || error "No se encontro linker glibc."
 
-    if ! grep -q "unset LD_PRELOAD" "$BIN_DIR/opencode" 2>/dev/null; then
-        cat > "$BIN_DIR/opencode" << EOF
+    if [ -f "$BIN_DIR/opencode" ] && ! grep -q "unset LD_PRELOAD" "$BIN_DIR/opencode" 2>/dev/null; then
+        cat > "$BIN_DIR/opencode" << 'EOF'
 #!/data/data/com.termux/files/usr/bin/bash
 unset LD_PRELOAD LD_LIBRARY_PATH
 export JSC_useJIT=false BUN_JIT=0
 exec "$PREFIX/glibc/lib/ld-linux-aarch64.so.1" \
     --library-path "$PREFIX/glibc/lib" \
-    "$HOME/.opencode/bin/opencode-bin" "\$@"
+    "$HOME/.opencode/bin/opencode-bin" "$@"
 EOF
         chmod +x "$BIN_DIR/opencode"
     fi
 
     mkdir -p "$HOME/.cache/opencode/bin"
-    [ ! -f "$HOME/.cache/opencode/bin/rg" ] && cp "$PREFIX/bin/rg" "$HOME/.cache/opencode/bin/rg"
+    if [ ! -f "$HOME/.cache/opencode/bin/rg" ]; then
+        cp "$PREFIX/bin/rg" "$HOME/.cache/opencode/bin/rg"
+    fi
 
     log "OpenCode instalado."
 }
@@ -186,23 +179,6 @@ instalar_tmux() {
     instalar_si_falta "tmux"
     instalar_si_falta "python"
 
-    dotfiles_stow
-
-    cat > "$PREFIX/bin/gmail-check" << 'SCRIPT'
-#!/data/data/com.termux/files/usr/bin/bash
-python3 -c "
-import imaplib
-with open('$HOME/.gmail-creds') as f:
-    user, pwd = f.read().strip().splitlines()
-c = imaplib.IMAP4_SSL('imap.gmail.com')
-c.login(user, pwd)
-c.select('INBOX')
-print(len(c.search(None, 'UNSEEN')[1][0].split()))
-c.logout()
-" 2>/dev/null || echo "0"
-SCRIPT
-    chmod +x "$PREFIX/bin/gmail-check"
-
     log "Tmux instalado."
 }
 
@@ -212,7 +188,24 @@ instalar_vim() {
     instalar_si_falta "neovim"
     instalar_si_falta "git"
 
-    dotfiles_stow
+    if [ ! -d "$HOME/.config/nvim" ] || [ ! -f "$HOME/.config/nvim/init.lua" ]; then
+        log "Instalando LazyVim..."
+        rm -rf "$HOME/.config/nvim"
+        git clone --depth 1 https://github.com/LazyVim/starter "$HOME/.config/nvim"
+        rm -rf "$HOME/.config/nvim/.git"
+    fi
+
+    log "Configurando Catppuccin Mocha..."
+    PLUGIN_DIR="$HOME/.config/nvim/lua/plugins"
+    mkdir -p "$PLUGIN_DIR"
+    rm -f "$PLUGIN_DIR/catppuccin.lua"
+    
+    local catppuccin_src="$SCRIPT_DIR/dotfiles/nvim/.config/nvim/lua/plugins/catppuccin.lua"
+    if [ -f "$catppuccin_src" ]; then
+        cp "$catppuccin_src" "$PLUGIN_DIR/"
+    else
+        warn "catppuccin.lua no encontrado en $catppuccin_src"
+    fi
 
     nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
 
@@ -227,11 +220,23 @@ instalar_extras() {
     instalar_si_falta "mpv"
     instalar_si_falta "yt-dlp"
 
+    if ! command -v lazygit &>/dev/null; then
+        log "Instalando lazygit..."
+        curl -fsSL https://github.com/jesseduffield/lazygit/releases/download/latest/lazygit_linux_arm64.tar.gz | tar xz -C "$PREFIX/bin"
+    else
+        log "lazygit ya instalado. Omitiendo."
+    fi
+
     log "Extras instalados."
 }
 
 instalar_mmx() {
     log "Instalando mmx-cli..."
+
+    if ! command -v npm &>/dev/null; then
+        warn "npm no encontrado. Instalando nodejs primero..."
+        instalar_si_falta "nodejs" "npm"
+    fi
 
     if ! command -v mmx &>/dev/null; then
         npm install -g mmx-cli
@@ -267,14 +272,18 @@ instalar_api_google() {
     instalar_si_falta "rclone"
 
     if [ ! -f "$HOME/.gmail-creds" ] || [ ! -s "$HOME/.gmail-creds" ]; then
-        warn "No se detectaron credenciales de Gmail."
-        echo -e "${FG_YELLOW}Genera App Password en: https://myaccount.google.com/security${NC}" >&2
-        read -r -p "Correo Gmail: " gmail_user
-        read -r -s -p "App Password: " gmail_pass
-        echo "" >&2
-        if [ -n "$gmail_user" ] && [ -n "$gmail_pass" ]; then
-            printf '%s\n%s\n' "$gmail_user" "$gmail_pass" > "$HOME/.gmail-creds"
-            chmod 600 "$HOME/.gmail-creds"
+        if [ -t 0 ]; then
+            warn "No se detectaron credenciales de Gmail."
+            echo -e "${FG_YELLOW}Genera App Password en: https://myaccount.google.com/security${NC}" >&2
+            read -r -p "Correo Gmail: " gmail_user
+            read -r -s -p "App Password: " gmail_pass
+            echo "" >&2
+            if [ -n "$gmail_user" ] && [ -n "$gmail_pass" ]; then
+                printf '%s\n%s\n' "$gmail_user" "$gmail_pass" > "$HOME/.gmail-creds"
+                chmod 600 "$HOME/.gmail-creds"
+            fi
+        else
+            warn "Modo no interactivo. Configura ~/.gmail-creds manualmente."
         fi
     fi
 
@@ -290,83 +299,14 @@ instalar_scripts() {
     log "Instalando scripts de conversion..."
 
     instalar_si_falta "pandoc"
-    pkg install -y python
-    pip install weasyprint 2>/dev/null || pip install weasyprint
+    instalar_si_falta "python"
 
-    mkdir -p "$HOME/scripts"
+    if ! command -v pip3 &>/dev/null; then
+        warn "pip3 no encontrado. Instalando python-pip..."
+        pkg install -y python-pip
+    fi
 
-    for script in md2pdf md2epub md2docx; do
-        cat > "$HOME/scripts/${script}.sh" << 'SCRIPT'
-#!/usr/bin/env bash
-set -e
-
-FONT_SIZE="${FONT_SIZE:-10}"
-H1_SIZE="${H1_SIZE:-16}"
-H2_SIZE="${H2_SIZE:-14}"
-H3_SIZE="${H3_SIZE:-12}"
-MARGIN_LEFT="${MARGIN_LEFT:-2cm}"
-MARGIN_RIGHT="${MARGIN_RIGHT:-2cm}"
-MARGIN_TOP="${MARGIN_TOP:-2.5cm}"
-MARGIN_BOTTOM="${MARGIN_BOTTOM:-2.5cm}"
-
-[ -z "$1" ] && { echo "Uso: $0 <fichero.md>"; exit 1; }
-INPUT="$1"
-[ ! -f "$INPUT" ] && { echo "Error: no existe '$INPUT'"; exit 1; }
-
-BASENAME="${INPUT%.md}"
-SCRIPT
-
-        if [ "$script" = "md2pdf" ]; then
-            cat >> "$HOME/scripts/${script}.sh" << 'EOF'
-OUTPUT="${BASENAME}.pdf"
-TMP_HTML="/data/data/com.termux/files/usr/tmp/md2pdf_temp.html"
-
-pandoc "$INPUT" -f markdown -t html --standalone -H /dev/stdin <<'CSSEOF' > "$TMP_HTML"
-<style>
-@page { margin-left: MARGIN_LEFT; margin-right: MARGIN_RIGHT; margin-top: MARGIN_TOP; margin-bottom: MARGIN_BOTTOM; }
-html { margin: 0; padding: 0; }
-body { margin: 0; padding: 0; max-width: none; font-size: FONT_SIZEpx; }
-h1 { font-size: H1_SIZEpx; } h2 { font-size: H2_SIZEpx; } h3 { font-size: H3_SIZEpx; }
-</style>
-CSSEOF
-
-sed -i "s/MARGIN_LEFT/${MARGIN_LEFT}/g; s/MARGIN_RIGHT/${MARGIN_RIGHT}/g; s/MARGIN_TOP/${MARGIN_TOP}/g; s/MARGIN_BOTTOM/${MARGIN_BOTTOM}/g; s/FONT_SIZE/${FONT_SIZE}/g; s/H1_SIZE/${H1_SIZE}/g; s/H2_SIZE/${H2_SIZE}/g; s/H3_SIZE/${H3_SIZE}/g" "$TMP_HTML"
-
-python3 -c "from weasyprint import HTML; HTML(filename='$TMP_HTML').write_pdf('$OUTPUT')"
-rm -f "$TMP_HTML"
-echo "PDF generado: $OUTPUT"
-EOF
-        elif [ "$script" = "md2epub" ]; then
-            cat >> "$HOME/scripts/${script}.sh" << 'EOF'
-OUTPUT="${BASENAME}.epub"
-TMP_CSS="/data/data/com.termux/files/usr/tmp/md2epub_temp.css"
-
-cat > "$TMP_CSS" <<CSSEOF
-body { font-size: ${FONT_SIZE}px; max-width: none; margin: 0; padding: 0; }
-h1 { font-size: $((${FONT_SIZE} + 6))px; } h2 { font-size: $((${FONT_SIZE} + 4))px; } h3 { font-size: $((${FONT_SIZE} + 2))px; }
-CSSEOF
-
-pandoc "$INPUT" -f markdown -t epub --css="$TMP_CSS" -o "$OUTPUT"
-rm -f "$TMP_CSS"
-echo "EPUB generado: $OUTPUT"
-EOF
-        else
-            cat >> "$HOME/scripts/${script}.sh" << 'EOF'
-OUTPUT="${BASENAME}.docx"
-
-pandoc "$INPUT" -f markdown -t docx -o "$OUTPUT"
-echo "DOCX generado: $OUTPUT"
-EOF
-        fi
-    done
-
-    chmod +x "$HOME/scripts/"*.sh
-
-    log "Creando enlaces en $PREFIX/bin..."
-    for script in "$HOME/scripts/"*.sh; do
-        name=$(basename "$script" .sh)
-        ln -sf "$script" "$PREFIX/bin/$name"
-    done
+    pip3 install --user weasyprint 2>&1 || warn "weasyprint no se pudo instalar."
 
     log "Scripts instalados."
 }
@@ -378,7 +318,7 @@ mostrar_menu() {
 
     echo -e "${BG_DARK}  BASE${NC}"
     echo -e "  ${FG_GREEN}[1]${NC}  Base (Termux + bashrc)"
-    echo -e "  ${FG_GREEN}[2]${NC}  Scripts (d, music-select, share-send, share-get, music-shuffle, md2pdf, md2epub, md2docx)"
+    echo -e "  ${FG_GREEN}[2]${NC}  Scripts (d, gmail-check, music-select, share-send, share-get, music-shuffle, md2pdf, md2epub, md2docx)"
     echo ""
 
     echo -e "${BG_DARK}  HERRAMIENTAS${NC}"
@@ -415,9 +355,16 @@ procesar_opcion() {
         9) echo -e "\n${FG_YELLOW}Instalando Google API...${NC}"; instalar_api_google ;;
         t|T)
             echo -e "\n${FG_SAPPHIRE}=== INSTALACION COMPLETA ===${NC}"
-            instalar_base && instalar_funciones && instalar_scripts && instalar_opencode
-            instalar_vim && instalar_extras && instalar_mmx
-            instalar_tmux && instalar_debian && instalar_api_google
+            instalar_base || warn "Error en instalar_base"
+            instalar_funciones || warn "Error en instalar_funciones"
+            instalar_scripts || warn "Error en instalar_scripts"
+            instalar_opencode || warn "Error en instalar_opencode"
+            instalar_vim || warn "Error en instalar_vim"
+            instalar_extras || warn "Error en instalar_extras"
+            instalar_mmx || warn "Error en instalar_mmx"
+            instalar_tmux || warn "Error en instalar_tmux"
+            instalar_debian || warn "Error en instalar_debian"
+            instalar_api_google || warn "Error en instalar_api_google"
             echo -e "${FG_SAPPHIRE}=== COMPLETADO ===${NC}"
             ;;
         0) echo -e "\n${FG_TEXT}Hasta luego!${NC}\n"; exit 0 ;;
