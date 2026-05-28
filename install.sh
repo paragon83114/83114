@@ -59,15 +59,23 @@ dotfiles_stow() {
     done
 
     for d in ~/.config/atuin ~/.termux; do
-        [ -d "$d" ] || [ -L "$d" ] && rm -rf "$d"
+        if [ -L "$d" ]; then
+            rm -f "$d"
+        elif [ -d "$d" ]; then
+            rm -rf "$d"
+        fi
     done
 
-    rm -f ~/bashrc ~/tmux.conf ~/.config/atuin/config.toml ~/.termux/termux.properties ~/.config/nvim/lua/plugins/catppuccin.lua
-    rm -f ~/.bashrc.bak.* ~/.tmux.conf.bak.* 2>/dev/null || true
+    rm -f ~/bashrc ~/tmux.conf ~/.bashrc.bak.* ~/.tmux.conf.bak.* 2>/dev/null || true
 
     cd "$SCRIPT_DIR/dotfiles"
     stow --target="$HOME" */
     cd "$SCRIPT_DIR"
+
+    log "Configurando font de Termux..."
+    mkdir -p "$HOME/.termux/fonts"
+    curl -L "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf" -o "$HOME/.termux/fonts/font.ttf"
+
     log "Dotfiles aplicados."
 }
 
@@ -153,7 +161,7 @@ instalar_opencode() {
     GLIBC_LD="$PREFIX/glibc/lib/ld-linux-aarch64.so.1"
     [ -f "$GLIBC_LD" ] || error "No se encontro linker glibc."
 
-    if [ -f "$BIN_DIR/opencode" ] && ! grep -q "unset LD_PRELOAD" "$BIN_DIR/opencode" 2>/dev/null; then
+    if ! grep -q "unset LD_PRELOAD" "$BIN_DIR/opencode" 2>/dev/null; then
         cat > "$BIN_DIR/opencode" << 'EOF'
 #!/data/data/com.termux/files/usr/bin/bash
 unset LD_PRELOAD LD_LIBRARY_PATH
