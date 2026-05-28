@@ -61,7 +61,6 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 | `ll` | lsd -lha |
 | `c` | clear |
 | `v` | nvim |
-| `f` | nvim -c "NvimTreeToggle" |
 | `g` | glow -w220 -p |
 | `oc` | opencode -c |
 | `t` | lsd -l --tree --depth 2 |
