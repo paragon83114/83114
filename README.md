@@ -47,7 +47,10 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 ### Scripts
 | Script | Descripción |
 |--------|-------------|
-| `d` | Navegación rápida a directorios |
+| `d` | Ver diario personal con glow |
+| `d "texto"` | Añadir entrada al diario |
+| `d eval` | Procesar diario con IA |
+| `d del` | Borrar última entrada |
 | `music-select` | Seleccionar y reproducir musica |
 | `music-shuffle` | Reproductor musical aleatorio |
 | `share-send` | Enviar archivos por red |
