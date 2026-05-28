@@ -378,7 +378,7 @@ mostrar_menu() {
 
     echo -e "${BG_DARK}  BASE${NC}"
     echo -e "  ${FG_GREEN}[1]${NC}  Base (Termux + bashrc)"
-    echo -e "  ${FG_GREEN}[2]${NC}  Scripts (d, share-send, share-get, musica)"
+    echo -e "  ${FG_GREEN}[2]${NC}  Scripts (d, m, share-send, share-get, musica, md2pdf, md2epub, md2docx)"
     echo ""
 
     echo -e "${BG_DARK}  HERRAMIENTAS${NC}"
@@ -394,10 +394,6 @@ mostrar_menu() {
     echo -e "  ${FG_GREEN}[9]${NC}  Google API (rclone + Gmail)"
     echo ""
 
-    echo -e "${BG_DARK}  SCRIPTS${NC}"
-    echo -e "  ${FG_GREEN}[A]${NC}  md2pdf, md2epub, md2docx"
-    echo ""
-
     echo -e "${BG_MANTLE}  TODO${NC}"
     echo -e "  ${FG_SAPPHIRE}[T]${NC}  Instalacion completa"
     echo ""
@@ -409,7 +405,7 @@ mostrar_menu() {
 procesar_opcion() {
     case "$1" in
         1) echo -e "\n${FG_YELLOW}Instalando base...${NC}"; instalar_base ;;
-        2) echo -e "\n${FG_YELLOW}Instalando funciones...${NC}"; instalar_funciones ;;
+        2) echo -e "\n${FG_YELLOW}Instalando scripts...${NC}"; instalar_funciones && instalar_scripts ;;
         3) echo -e "\n${FG_YELLOW}Instalando OpenCode...${NC}"; instalar_opencode ;;
         4) echo -e "\n${FG_YELLOW}Instalando Neovim...${NC}"; instalar_vim ;;
         5) echo -e "\n${FG_YELLOW}Instalando extras...${NC}"; instalar_extras ;;
@@ -417,12 +413,11 @@ procesar_opcion() {
         7) echo -e "\n${FG_YELLOW}Instalando Tmux...${NC}"; instalar_tmux ;;
         8) echo -e "\n${FG_YELLOW}Instalando Debian...${NC}"; instalar_debian ;;
         9) echo -e "\n${FG_YELLOW}Instalando Google API...${NC}"; instalar_api_google ;;
-        a|A) echo -e "\n${FG_YELLOW}Instalando scripts...${NC}"; instalar_scripts ;;
         t|T)
             echo -e "\n${FG_SAPPHIRE}=== INSTALACION COMPLETA ===${NC}"
-            instalar_base && instalar_funciones && instalar_opencode
+            instalar_base && instalar_funciones && instalar_scripts && instalar_opencode
             instalar_vim && instalar_extras && instalar_mmx
-            instalar_tmux && instalar_debian && instalar_api_google && instalar_scripts
+            instalar_tmux && instalar_debian && instalar_api_google
             echo -e "${FG_SAPPHIRE}=== COMPLETADO ===${NC}"
             ;;
         0) echo -e "\n${FG_TEXT}Hasta luego!${NC}\n"; exit 0 ;;

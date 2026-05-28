@@ -108,7 +108,7 @@ bash install.sh
 
   BASE
   [1] Base (Termux + bashrc)
-  [2] Scripts (d, share-send, share-get, musica)
+  [2] Scripts (d, m, share-send, share-get, musica, md2pdf, md2epub, md2docx)
 
   HERRAMIENTAS
   [3] OpenCode (IA CLI)
@@ -120,9 +120,6 @@ bash install.sh
   [7] Tmux (terminal manager)
   [8] Debian (proot-distro)
   [9] Google API (rclone + Gmail)
-
-  SCRIPTS
-  [A] md2pdf, md2epub, md2docx
 
   TODO
   [T] Instalación completa
