@@ -133,7 +133,7 @@ bash install.sh
 
   BASE
   [1] Base (Termux + bashrc)
-  [2] Scripts (d, music-select, music-shuffle, share-send, share-get, md2pdf, md2epub, md2docx)
+  [2] Scripts (d=diario, music-select, music-shuffle, share-send, share-get, md2pdf, md2epub, md2docx)
 
   HERRAMIENTAS
   [3] OpenCode (IA CLI)
