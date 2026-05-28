@@ -65,7 +65,8 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 | `g` | glow -w220 -p |
 | `oc` | opencode -c |
 | `t` | lsd -l --tree --depth 2 |
-| `m` | music-select |
+| `m` | music-shuffle |
+| `ms` | music-select |
 | `lg` | lazygit (en ~/termux) |
 | `bye` | kill -9 -1 |
 
