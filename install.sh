@@ -303,7 +303,10 @@ instalar_scripts() {
         pkg install -y python-pip
     fi
 
-    pip3 install --user weasyprint >/dev/null 2>&1 || warn "weasyprint no se pudo instalar (requiere dependencias del sistema)."
+    log "Instalando dependencias de weasyprint..."
+    pkg install -y libffi libjpeg-turbo openjpeg zlib
+
+    pip3 install --break-system-packages weasyprint >/dev/null 2>&1 || warn "weasyprint no se pudo instalar."
 
     log "Scripts instalados."
 }
