@@ -11,6 +11,11 @@ google() {
     termux-open-url "https://www.google.com/search?q=${query}"
 }
 
+minimax() {
+    [ $# -eq 0 ] && { echo "Uso: minimax <query>"; return 1; }
+    mmx search query --q "$*"
+}
+
 __pretty_dir() { echo -n "${PWD/#$HOME/\~}"; }
 
 export HOSTNAME="MiTermux"

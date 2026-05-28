@@ -73,6 +73,7 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 | Función | Descripción |
 |---------|-------------|
 | `google <texto>` | Buscar en Google |
+| `minimax <query>` | Buscar con MiniMax AI |
 
 ### Servicios
 - **Debian**: Distribución Linux dentro de Termux (proot-distro)
