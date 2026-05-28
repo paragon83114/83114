@@ -21,7 +21,7 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
     ├── tmux/.tmux.conf
     ├── termux/.termux/
     │    ├── termux.properties
-    │    └── fonts/font.ttf   # Fuente personalizada
+    │    └── font.ttf         # Fuente personalizada
     ├── atuin/.config/atuin/config.toml
     └── nvim/.config/nvim/
         └── lua/plugins/
