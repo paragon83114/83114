@@ -229,7 +229,8 @@ instalar_extras() {
 
     if ! command -v lazygit &>/dev/null; then
         log "Instalando lazygit..."
-        curl -fsSL https://github.com/jesseduffield/lazygit/releases/download/latest/lazygit_linux_arm64.tar.gz | tar xz -C "$PREFIX/bin"
+        LAZYGIT_VERSION=$(curl -s https://api.github.com/repos/jesseduffield/lazygit/releases/latest | grep -o '"tag_name": "[^"]*' | cut -d'"' -f4 | sed 's/v//')
+        curl -fsSL "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_linux_arm64.tar.gz" | tar xz -C "$PREFIX/bin"
     else
         log "lazygit ya instalado. Omitiendo."
     fi
