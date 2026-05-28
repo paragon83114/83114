@@ -303,7 +303,7 @@ instalar_scripts() {
         pkg install -y python-pip
     fi
 
-    pip3 install --user weasyprint 2>&1 || warn "weasyprint no se pudo instalar."
+    pip3 install --user weasyprint >/dev/null 2>&1 || warn "weasyprint no se pudo instalar (requiere dependencias del sistema)."
 
     log "Scripts instalados."
 }
