@@ -227,13 +227,7 @@ instalar_extras() {
     instalar_si_falta "mpv"
     instalar_si_falta "yt-dlp"
 
-    if ! command -v lazygit &>/dev/null; then
-        log "Instalando lazygit..."
-        LAZYGIT_VERSION=$(curl -s https://api.github.com/repos/jesseduffield/lazygit/releases/latest | grep -o '"tag_name": "[^"]*' | cut -d'"' -f4 | sed 's/v//')
-        curl -fsSL "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_linux_arm64.tar.gz" | tar xz -C "$PREFIX/bin"
-    else
-        log "lazygit ya instalado. Omitiendo."
-    fi
+    instalar_si_falta "lazygit"
 
     log "Extras instalados."
 }
