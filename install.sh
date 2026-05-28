@@ -378,7 +378,7 @@ mostrar_menu() {
 
     echo -e "${BG_DARK}  BASE${NC}"
     echo -e "  ${FG_GREEN}[1]${NC}  Base (Termux + bashrc)"
-    echo -e "  ${FG_GREEN}[2]${NC}  Scripts (d, m, share-send, share-get, musica, md2pdf, md2epub, md2docx)"
+    echo -e "  ${FG_GREEN}[2]${NC}  Scripts (d, m, share-send, share-get, music_shuffle, md2pdf, md2epub, md2docx)"
     echo ""
 
     echo -e "${BG_DARK}  HERRAMIENTAS${NC}"
