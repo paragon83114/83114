@@ -2,7 +2,7 @@ export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 EDITOR=nvim
 export PATH="$HOME/.opencode/bin:$HOME/bin:$PATH"
 export HISTTIMEFORMAT="%F %T "
 
-alias ls="lsd" l="lsd -l" ll="lsd -lha" c="clear" nano="nvim" g="glow -w220 -p" oc="opencode -c" v="nvim" f='nvim -c "NvimTreeToggle"' t="lsd -l --tree --depth 2" bye="kill -9 -1" m="music-all" lg="cd ~/termux && lazygit"
+alias ls="lsd" l="lsd -l" ll="lsd -lha" c="clear" nano="nvim" g="glow -w220 -p" oc="opencode -c" v="nvim" f='nvim -c "NvimTreeToggle"' t="lsd -l --tree --depth 2" bye="kill -9 -1" m="music-select" lg="cd ~/termux && lazygit"
 
 google() {
     [ $# -eq 0 ] && { echo "Uso: google <termino1> [termino2] ..."; return 1; }
