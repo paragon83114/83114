@@ -8,7 +8,7 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 83114/
 ├── install.sh          # Instalador interactivo
 ├── scripts/            # Scripts utilitarios
-│   ├── d.sh           # Navegación rápida
+│   ├── d.sh           # Diario personal
 │   ├── music-select.sh  # Seleccionar y reproducir musica
 │   ├── music-shuffle.sh # Reproductor musical aleatorio
 │   ├── share-send.sh  # Enviar archivos
@@ -212,10 +212,13 @@ music-shuffle
 
 ### d
 
-Navegación rápida. Editar `d.sh` para personalizar rutas.
+Diario personal. Sin args: ver con glow. Con args: añadir entrada.
 
 ```bash
-d
+d                  # Ver diario
+d "texto"          # Añadir entrada
+d eval             # Procesar con IA
+d del              # Borrar última entrada
 ```
 
 ## Configuración Post-Instalación
