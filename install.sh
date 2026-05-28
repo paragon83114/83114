@@ -58,11 +58,11 @@ dotfiles_stow() {
         [ -f "$f" ] || [ -L "$f" ] && rm -f "$f"
     done
 
-    for d in ~/.config/atuin ~/.config/nvim ~/.termux; do
+    for d in ~/.config/atuin ~/.termux; do
         [ -d "$d" ] || [ -L "$d" ] && rm -rf "$d"
     done
 
-    rm -f ~/bashrc ~/tmux.conf ~/.config/atuin/config.toml ~/.termux/termux.properties
+    rm -f ~/bashrc ~/tmux.conf ~/.config/atuin/config.toml ~/.termux/termux.properties ~/.config/nvim/lua/plugins/catppuccin.lua
     rm -f ~/.bashrc.bak.* ~/.tmux.conf.bak.* 2>/dev/null || true
 
     cd "$SCRIPT_DIR/dotfiles"
@@ -198,11 +198,10 @@ instalar_vim() {
     log "Configurando Catppuccin Mocha..."
     PLUGIN_DIR="$HOME/.config/nvim/lua/plugins"
     mkdir -p "$PLUGIN_DIR"
-    rm -f "$PLUGIN_DIR/catppuccin.lua"
-    
+
     local catppuccin_src="$SCRIPT_DIR/dotfiles/nvim/.config/nvim/lua/plugins/catppuccin.lua"
     if [ -f "$catppuccin_src" ]; then
-        cp "$catppuccin_src" "$PLUGIN_DIR/"
+        ln -sf "$catppuccin_src" "$PLUGIN_DIR/catppuccin.lua"
     else
         warn "catppuccin.lua no encontrado en $catppuccin_src"
     fi
