@@ -53,6 +53,27 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 | `share-send` | Enviar archivos por red |
 | `share-get` | Recibir archivos por red |
 
+### Alias
+| Alias | Comando |
+|-------|---------|
+| `ls` | lsd |
+| `l` | lsd -l |
+| `ll` | lsd -lha |
+| `c` | clear |
+| `v` | nvim |
+| `f` | nvim -c "NvimTreeToggle" |
+| `g` | glow -w220 -p |
+| `oc` | opencode -c |
+| `t` | lsd -l --tree --depth 2 |
+| `m` | music-select |
+| `lg` | lazygit (en ~/termux) |
+| `bye` | kill -9 -1 |
+
+### Funciones
+| Función | Descripción |
+|---------|-------------|
+| `google <texto>` | Buscar en Google |
+
 ### Servicios
 - **Debian**: Distribución Linux dentro de Termux (proot-distro)
 - **Google API**: Integración con rclone y Gmail
