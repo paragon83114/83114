@@ -13,6 +13,8 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 │   ├── music-shuffle.sh # Reproductor musical aleatorio
 │   ├── share-send.sh  # Enviar archivos
 │   └── share-get.sh   # Recibir archivos
+├── templates/         # Plantillas
+│   └── daily.md       # Plantilla del diario
 └── dotfiles/          # Configuraciones (stow)
     ├── bashrc/.bashrc
     ├── tmux/.tmux.conf
