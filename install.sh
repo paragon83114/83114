@@ -71,11 +71,6 @@ dotfiles_stow() {
     cd "$SCRIPT_DIR/dotfiles"
     stow --target="$HOME" */
     cd "$SCRIPT_DIR"
-
-    log "Configurando font de Termux..."
-    mkdir -p "$HOME/.termux/fonts"
-    curl -L "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf" -o "$HOME/.termux/fonts/font.ttf"
-
     log "Dotfiles aplicados."
 }
 
