@@ -2,18 +2,24 @@ export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 EDITOR=nvim
 export PATH="$HOME/.opencode/bin:$HOME/bin:$PATH"
 export HISTTIMEFORMAT="%F %T "
 
-alias ls="lsd" l="lsd -l" ll="lsd -lha" c="clear" nano="nvim" g="glow -w220 -p" oc="opencode -c" v="nvim" t="lsd -l --tree --depth 2" bye="kill -9 -1" m="music-shuffle" ms="music-select" lg="lazygit"
+alias ls="lsd" l="lsd -l" ll="lsd -lha" c="clear" nano="nvim" g="glow -w220 -p" oc="opencode -c" v="nvim" t="lsd -l --tree --depth 2" bye="kill -9 -1" m="music-shuffle" ms="music-select" lg="lazygit" h="atuin search -i"
 
 google() {
-    [ $# -eq 0 ] && { echo "Uso: google <termino1> [termino2] ..."; return 1; }
-    local query
-    query=$(printf '%s' "$*" | sed 's/ /+/g')
-    termux-open-url "https://www.google.com/search?q=${query}"
+  [ $# -eq 0 ] && {
+    echo "Uso: google <termino1> [termino2] ..."
+    return 1
+  }
+  local query
+  query=$(printf '%s' "$*" | sed 's/ /+/g')
+  termux-open-url "https://www.google.com/search?q=${query}"
 }
 
 minimax() {
-    [ $# -eq 0 ] && { echo "Uso: minimax <query>"; return 1; }
-    mmx search query --q "$*"
+  [ $# -eq 0 ] && {
+    echo "Uso: minimax <query>"
+    return 1
+  }
+  mmx search query --q "$*"
 }
 
 __pretty_dir() { echo -n "${PWD/#$HOME/\~}"; }
@@ -36,8 +42,11 @@ PS1="${B_DARK}${F_SAPPHIRE} \u ${S_DARK_TO_SAP}${B_SAPPHIRE}${F_DARK} \$HOSTN
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash --cmd cd)"
 command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
 [ -f "$HOME/.local/share/bash-preexec/bash-preexec.sh" ] && source "$HOME/.local/share/bash-preexec/bash-preexec.sh"
-command -v atuin >/dev/null 2>&1 && eval "$(atuin init bash)"
+command -v atuin >/dev/null 2>&1 && eval "$(atuin init bash --disable-up-arrow --disable-ctrl-r)" && {
+  atuin-bind -m emacs '\eh' atuin-search-emacs
+  atuin-bind -m vi-insert '\eh' atuin-search-viins
+}
 
 if [ -z "${TMUX:-}" ] && ! pgrep -x tmux >/dev/null; then
-    tmux new-session -A -s main
+  tmux new-session -A -s main
 fi
