@@ -8,6 +8,8 @@ red="\033[1;31m"
 green="\033[1;32m"
 reset="\033[0m"
 
+cd ~
+
 if [ ! -f "$diario" ]; then
   curl -s -o "$diario" "$DAILY_TEMPLATE" 2>/dev/null || touch "$diario"
 fi
@@ -77,4 +79,3 @@ grep -q "## ${fecha}" "$diario" || echo -e "\n---\n\n## ${fecha}\n" >>"$diario"
 echo -e "### ${hora}\n\n$*\n" >>"$diario"
 echo -e "${green}Guardado${reset}"
 date +%s >"$HOME/.diario_last_entry"
-
