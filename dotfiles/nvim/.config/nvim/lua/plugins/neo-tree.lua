@@ -9,25 +9,12 @@ return {
   config = function()
     require("neo-tree").setup({
       close_if_last_window = true,
-      enable_diagnostics = true,
       sources = { "filesystem", "buffers", "git_status" },
       filesystem = {
-        filtered_items = {
-          hide_dotfiles = false,
-          hide_gitignored = false,
-        },
-        enable_preview = true,
-      },
-      window = {
-        width = 60,
-      },
-      default_component_configs = {
-        file_preview = {
-          enable = true,
-        },
+        hide_dotfiles = false,
+        hide_gitignored = false,
       },
     })
     vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "Toggle file explorer" })
-    vim.keymap.set("n", "z", "<cmd>Neotree focus preview<CR>", { desc = "Focus preview panel" })
   end,
 }
