@@ -6,26 +6,33 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 
 ```
 83114/
-├── install.sh          # Instalador interactivo
-├── scripts/            # Scripts utilitarios
-│   ├── d.sh           # Diario personal
-│   ├── gmail-check.sh # Verificar correos no leidos
-│   ├── music-select.sh # Seleccionar y reproducir musica
-│   ├── music-shuffle.sh # Reproductor musical aleatorio
-│   ├── share-send.sh  # Enviar archivos
-│   └── share-get.sh   # Recibir archivos
-├── templates/         # Plantillas
-│   └── daily.md       # Plantilla del diario
-└── dotfiles/          # Configuraciones (stow)
+├── install.sh              # Instalador interactivo
+├── scripts/                # Scripts de instalacion
+│   ├── install_mmx.sh      # Instalar mmx-cli
+│   ├── install_antigravity.sh # Instalar Antigravity CLI
+│   ├── d.sh               # Diario personal
+│   ├── gmail-check.sh      # Verificar correos no leidos
+│   ├── music-select.sh     # Seleccionar y reproducir musica
+│   ├── music-shuffle.sh    # Reproductor musical aleatorio
+│   ├── share-send.sh       # Enviar archivos
+│   ├── share-get.sh        # Recibir archivos
+│   └── md2pdf.sh / md2epub.sh / md2docx.sh # Conversion de documentos
+├── templates/              # Plantillas
+│   └── daily.md           # Plantilla del diario
+└── dotfiles/              # Configuraciones (stow)
     ├── bashrc/.bashrc
     ├── tmux/.tmux.conf
     ├── termux/.termux/
-    │    ├── termux.properties
-    │    └── font.ttf         # Fuente personalizada
+    │   ├── termux.properties
+    │   └── font.ttf         # Fuente personalizada
     ├── atuin/.config/atuin/config.toml
     └── nvim/.config/nvim/
+        ├── init.lua          # Bootstrap de lazy.nvim
         └── lua/plugins/
-            └── catppuccin.lua  # Tema Catppuccin Mocha
+            ├── catppuccin.lua    # Tema Catppuccin Mocha
+            ├── filemanager.lua    # NvimTree
+            ├── lsp-bash.lua      # LSP para Bash
+            └── cmp.lua            # Autocompletado nvim-cmp
 ```
 
 ## Componentes Instalados
@@ -39,28 +46,33 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 
 ### Herramientas
 - **Neovim**: Editor de texto con plugins
-  - catppuccin.lua: Tema Catppuccin Mocha
-- **atuin**: Historial de comandos mejorado
+  - lazy.nvim: Gestor de plugins
+  - catppuccin: Tema Catppuccin Mocha
+  - nvim-tree: Explorador de archivos (`f` o `<leader>e`)
+  - nvim-cmp + nvim-lspconfig: Autocompletado y LSP
+  - bash-language-server: Soporte LSP para Bash
 - **OpenCode**: CLI de Inteligencia Artificial
-- **mmx-cli**: Herramienta MiniMax AI
 - **fzf**: Buscador fuzzy
 - **zoxide**: Navegación inteligente entre directorios
 - **mpv**: Reproductor multimedia
 - **yt-dlp**: Descargador de video/audio
+- **lazygit**: Interface git para terminal
 
 ### Scripts
-| Script | Descripción |
+| Script | Descripcion |
 |--------|-------------|
 | `d` | Ver diario personal con glow |
-| `d "texto"` | Añadir entrada al diario |
+| `d "texto"` | Anadir entrada al diario |
 | `d eval` | Procesar diario con IA |
-| `d del` | Borrar última entrada |
+| `d del` | Borrar ultima entrada |
 | `gmail-check` | Correos no leidos en Gmail |
 | `music-select` | Seleccionar y reproducir musica |
 | `music-shuffle` | Reproductor musical aleatorio |
 | `share-send` | Enviar archivos por red |
 | `share-get` | Recibir archivos por red |
 | `md2pdf/md2epub/md2docx` | Convertir Markdown a PDF/EPUB/DOCX |
+| `install_mmx` | Instalar mmx-cli |
+| `install_antigravity` | Instalar Antigravity CLI |
 
 ### Alias
 | Alias | Comando |
@@ -69,44 +81,47 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 | `l` | lsd -l |
 | `ll` | lsd -lha |
 | `c` | clear |
+| `nano` | nvim |
 | `v` | nvim |
+| `f` | nvim -c "NvimTreeToggle" |
 | `g` | glow -w220 -p |
 | `oc` | opencode -c |
 | `t` | lsd -l --tree --depth 2 |
+| `bye` | kill -9 -1 |
 | `m` | music-shuffle |
 | `ms` | music-select |
-| `lg` | lazygit (en ~/termux) |
-| `bye` | kill -9 -1 |
+| `lg` | lazygit |
+| `h` | atuin search -i |
 
 ### Funciones
-| Función | Descripción |
+| Funcion | Descripcion |
 |---------|-------------|
 | `google <texto>` | Buscar en Google |
 | `minimax <query>` | Buscar con MiniMax AI |
 
 ### Servicios
-- **Debian**: Distribución Linux dentro de Termux (proot-distro)
-- **Google API**: Integración con rclone y Gmail
+- **Tmux**: Gestor de terminal multiplexado
+- **Debian**: Distribucion Linux dentro de Termux (proot-distro)
+- **udocker**: Docker sin root
+- **Google API**: Integracion con rclone y Gmail
+- **Antigravity CLI**: CLI de Indigo DC (instalacion independiente)
 
 ### Extras
 - **md2pdf**: Convertir Markdown a PDF
 - **md2epub**: Convertir Markdown a EPUB
 - **md2docx**: Convertir Markdown a DOCX
 
-## Instalación
+## Instalacion
 
-### Instalador Unificado (Opción A)
+### Instalador Unificado
 
 ```bash
-# Clonar repositorio
 git clone https://github.com/paragon83114/83114.git
-
-# Ejecutar instalador
 cd 83114
 bash install.sh
 ```
 
-### Instalación Manual
+### Instalacion Manual
 
 ```bash
 # Instalar stow
@@ -127,7 +142,7 @@ done
 
 ## Uso
 
-### Menú del Instalador
+### Menu del Instalador
 
 ```bash
 bash install.sh
@@ -138,27 +153,26 @@ bash install.sh
 
   BASE
   [1] Base (Termux + bashrc)
-  [2] Scripts (d, gmail-check, music-select, music-shuffle, share-send, share-get, md2pdf, md2epub, md2docx)
+  [2] Scripts (d, gmail-check, music-select, share-send, share-get, music-shuffle, md2pdf, md2epub, md2docx)
 
   HERRAMIENTAS
   [3] OpenCode (IA CLI)
   [4] Neovim (editor)
   [5] Extras (fzf, zoxide, mpv, yt-dlp)
-  [6] mmx-cli (MiniMax AI)
 
   SERVICIOS
-  [7] Tmux (terminal manager)
-  [8] Debian (proot-distro)
+  [6] Tmux (terminal manager)
+  [7] Debian (proot-distro)
+  [8] udocker (Docker sin root)
   [9] Google API (rclone + Gmail)
 
   TODO
-  [T] Instalación completa
+  [T] Instalacion completa
 ```
 
 ### Instalar Todo
 
 ```bash
-# Opción T en el menú
 bash install.sh
 # Seleccionar T
 ```
@@ -175,7 +189,7 @@ for f in scripts/*.sh; do
 done
 ```
 
-## Gestión de Dotfiles con Stow
+## Gestion de Dotfiles con Stow
 
 ### Agregar nuevo dotfile
 
@@ -200,10 +214,10 @@ stow --target="$HOME" -D <paquete>
 
 ### share-send / share-get
 
-Transfirir archivos entre dispositivos en la misma red.
+Transferir archivos entre dispositivos en la misma red.
 
 ```bash
-# Dispositivo emisor (en ~/scripts)
+# Dispositivo emisor
 share-send archivo.txt
 
 # Dispositivo receptor
@@ -218,16 +232,33 @@ music-shuffle
 
 ### d
 
-Diario personal. Sin args: ver con glow. Con args: añadir entrada.
+Diario personal. Sin args: ver con glow. Con args: anadir entrada.
 
 ```bash
 d                  # Ver diario
-d "texto"          # Añadir entrada
+d "texto"          # Anadir entrada
 d eval             # Procesar con IA
-d del              # Borrar última entrada
+d del              # Borrar ultima entrada
 ```
 
-## Configuración Post-Instalación
+## Neovim
+
+### Atajos de Teclado
+
+| Atajo | Accion |
+|-------|--------|
+| `<leader>e` | Toggle NvimTree |
+| `f` | Toggle NvimTree (alias) |
+| `I` | Toggle archivos ocultos en NvimTree |
+| `<CR>` | Abrir archivo en NvimTree |
+
+### Instalar plugins
+
+```bash
+nvim --headless "+Lazy! sync" +qa
+```
+
+## Configuracion Post-Instalacion
 
 ### Termux Setup
 
@@ -235,15 +266,8 @@ d del              # Borrar última entrada
 # Configurar almacenamiento
 termux-setup-storage
 
-# Recargar configuración
+# Recargar configuracion
 termux-reload-settings
-```
-
-### Neovim
-
-```bash
-# Instalar plugins
-nvim --headless "+Lazy! sync" +qa
 ```
 
 ## Requisitos
