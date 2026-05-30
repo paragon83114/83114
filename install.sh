@@ -254,14 +254,9 @@ instalar_debian() {
 instalar_udocker() {
     log "Instalando udocker..."
 
-    if ! command -v python3 &>/dev/null || ! command -v pip3 &>/dev/null; then
-        instalar_si_falta "python" "pip"
-    fi
-
     if ! command -v udocker &>/dev/null; then
-        log "Descargando udocker..."
-        curl -fsSL https://raw.githubusercontent.com/indigo-dc/udocker/master/udocker.py -o "$PREFIX/bin/udocker" || error "Descarga fallida."
-        chmod +x "$PREFIX/bin/udocker"
+        log "Instalando udocker con pkg..."
+        pkg install udocker -y
     else
         log "udocker ya instalado. Omitiendo."
     fi
