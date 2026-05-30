@@ -1,5 +1,8 @@
 return {
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000, opts = {
+  "catppuccin/nvim",
+  name = "catppuccin",
+  priority = 1000,
+  opts = {
     flavour = "mocha",
     transparent_background = false,
     term_colors = true,
@@ -32,6 +35,8 @@ return {
         lavender = "#b4befe",
       },
     },
-  } },
-  { "LazyVim/LazyVim", opts = { colorscheme = "catppuccin-mocha" } },
+  },
+  config = function()
+    vim.cmd.colorscheme("catppuccin-mocha")
+  end,
 }

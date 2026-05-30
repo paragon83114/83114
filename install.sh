@@ -58,7 +58,7 @@ dotfiles_stow() {
         [ -f "$f" ] || [ -L "$f" ] && rm -f "$f"
     done
 
-    for d in ~/.config/atuin ~/.termux; do
+    for d in ~/.config/atuin ~/.config/nvim ~/.termux; do
         if [ -L "$d" ]; then
             rm -f "$d"
         elif [ -d "$d" ]; then
@@ -191,23 +191,14 @@ instalar_vim() {
     instalar_si_falta "neovim"
     instalar_si_falta "git"
 
-    if [ ! -d "$HOME/.config/nvim" ] || [ ! -f "$HOME/.config/nvim/init.lua" ]; then
-        log "Instalando LazyVim..."
-        rm -rf "$HOME/.config/nvim"
-        git clone --depth 1 https://github.com/LazyVim/starter "$HOME/.config/nvim"
-        rm -rf "$HOME/.config/nvim/.git"
-    fi
+    instalar_stow
 
-    log "Configurando Catppuccin Mocha..."
-    PLUGIN_DIR="$HOME/.config/nvim/lua/plugins"
-    mkdir -p "$PLUGIN_DIR"
+    log "Aplicando dotfiles de Neovim..."
+    rm -rf "$HOME/.config/nvim"
 
-    local catppuccin_src="$SCRIPT_DIR/dotfiles/nvim/.config/nvim/lua/plugins/catppuccin.lua"
-    if [ -f "$catppuccin_src" ]; then
-        ln -sf "$catppuccin_src" "$PLUGIN_DIR/catppuccin.lua"
-    else
-        warn "catppuccin.lua no encontrado en $catppuccin_src"
-    fi
+    cd "$SCRIPT_DIR/dotfiles"
+    stow --target="$HOME" nvim
+    cd "$SCRIPT_DIR"
 
     nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
 
