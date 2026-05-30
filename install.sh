@@ -209,6 +209,9 @@ instalar_vim() {
     rm -rf "$HOME/.local/share/nvim"
     rm -rf "$HOME/.local/state/nvim"
     rm -rf "$HOME/.cache/nvim"
+    if [ -L "$HOME/.config" ]; then
+        rm -f "$HOME/.config"
+    fi
 
     instalar_stow
 
