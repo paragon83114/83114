@@ -40,6 +40,7 @@ S_END='\[\033[38;2;24;24;37m\]'
 PS1="${B_DARK}${F_SAPPHIRE} \u ${S_DARK_TO_SAP}${B_SAPPHIRE}${F_DARK} \$HOSTNAME ${S_TO_DARK}${B_DARK}${F_WHITE} \$(__pretty_dir) ${S_TO_MANTLE}${B_MANTLE}${F_LAVENDER} \A ${F_SAPPHIRE}❯ ${R}${S_END}${R} "
 
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash --cmd cd)"
+[ -f "$HOME/.config/fzf/fzf.bash" ] && source "$HOME/.config/fzf/fzf.bash"
 command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
 [ -f "$HOME/.local/share/bash-preexec/bash-preexec.sh" ] && source "$HOME/.local/share/bash-preexec/bash-preexec.sh"
 command -v atuin >/dev/null 2>&1 && eval "$(atuin init bash --disable-up-arrow --disable-ctrl-r)" && {
