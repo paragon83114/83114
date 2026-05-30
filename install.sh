@@ -204,17 +204,21 @@ instalar_vim() {
         sed -i '1s|#!/usr/bin/env node|#!/data/data/com.termux/files/usr/bin/node|' "$(command -v bash-language-server)"
     fi
 
+    log "Limpiando instalaciones anteriores..."
+    rm -rf "$HOME/.config/nvim"
+    rm -rf "$HOME/.local/share/nvim"
+    rm -rf "$HOME/.local/state/nvim"
+    rm -rf "$HOME/.cache/nvim"
+
     instalar_stow
 
     log "Aplicando dotfiles de Neovim..."
-    rm -rf "$HOME/.config/nvim"
-
     cd "$SCRIPT_DIR/dotfiles"
     stow --target="$HOME" nvim
     cd "$SCRIPT_DIR"
 
     log "Sincronizando plugins..."
-    nvim --headless "+lua vim.defer_fn(function() require('lazy').sync({ wait = true }); vim.cmd('qa') end, 100)" +q
+    nvim --headless "+lua vim.opt.rtp:prepend(vim.fn.stdpath('data')..'/lazy/lazy.nvim'); require('lazy').sync({ wait = true }); vim.cmd('qa')" +q
 
     log "Neovim instalado."
 }
