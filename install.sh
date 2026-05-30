@@ -214,7 +214,7 @@ instalar_vim() {
     cd "$SCRIPT_DIR"
 
     log "Sincronizando plugins..."
-    nvim --headless "+lua require('lazy').sync({ wait = true })" +qa
+    nvim --headless "+lua vim.defer_fn(function() require('lazy').sync({ wait = true }); vim.cmd('qa') end, 100)" +q
 
     log "Neovim instalado."
 }
