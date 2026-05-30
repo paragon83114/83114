@@ -235,13 +235,11 @@ instalar_extras() {
     log "Instalando extras..."
 
     log "Limpiando extras anteriores..."
-    rm -rf "$HOME/.config/atuin"
     rm -rf "$HOME/.config/fzf"
     rm -rf "$HOME/.config/glow"
     rm -rf "$HOME/.config/lazygit"
     rm -rf "$HOME/.config/mpv"
     rm -rf "$HOME/.config/rclone"
-    rm -rf "$HOME/.local/share/atuin"
     rm -rf "$HOME/.local/state/zoxide"
     rm -rf "$HOME/.config/zoxide"
     rm -f "$HOME/.fzf.bash"
