@@ -226,8 +226,6 @@ instalar_extras() {
     instalar_si_falta "mpv"
     instalar_si_falta "yt-dlp"
 
-    instalar_si_falta "lazygit"
-
     log "Extras instalados."
 }
 

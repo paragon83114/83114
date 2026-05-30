@@ -54,7 +54,7 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 - **zoxide**: Navegación inteligente entre directorios
 - **mpv**: Reproductor multimedia
 - **yt-dlp**: Descargador de video/audio
-- **lazygit**: Interface git para terminal
+- **neogit**: Interface git para terminal (nvim plugin)
 
 ### Scripts
 | Script | Descripcion |
@@ -88,7 +88,7 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 | `bye` | kill -9 -1 |
 | `m` | music-shuffle |
 | `ms` | music-select |
-| `lg` | lazygit |
+| `lg` | neogit (<leader>git) |
 | `h` | history (Ctrl+R con fzf) |
 
 ### Funciones
