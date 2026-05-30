@@ -1,2 +1,5 @@
 #!/usr/bin/env bash
-cd ~/storage/music && fzf --multi --height 60% --border --prompt "Musica: " --header "Tab=marcar  Enter=reproducir  ESC=salir" --reverse --exact | while read -r f; do mpv "$f"; done
+
+MUSIC_DIR="$HOME/storage/music"
+
+cd "$MUSIC_DIR" && ls | fzf --height=60% --border=rounded --prompt="Musica: " --reverse --no-multi --preview-window=right:40% --preview="killall mpv 2>/dev/null ; pwd && mpv --no-video --osd-level=0 "{}""
