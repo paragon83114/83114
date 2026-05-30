@@ -252,6 +252,24 @@ instalar_debian() {
     log "Debian instalado."
 }
 
+instalar_udocker() {
+    log "Instalando udocker..."
+
+    if ! command -v python3 &>/dev/null || ! command -v pip3 &>/dev/null; then
+        instalar_si_falta "python" "pip"
+    fi
+
+    if ! command -v udocker &>/dev/null; then
+        log "Descargando udocker..."
+        curl -fsSL https://raw.githubusercontent.com/indigo-dc/udocker/master/udocker.py -o "$PREFIX/bin/udocker" || error "Descarga fallida."
+        chmod +x "$PREFIX/bin/udocker"
+    else
+        log "udocker ya instalado. Omitiendo."
+    fi
+
+    log "udocker instalado."
+}
+
 instalar_api_google() {
     log "Instalando Google API..."
 
@@ -319,7 +337,8 @@ mostrar_menu() {
     echo -e "${BG_DARK}  SERVICIOS${NC}"
     echo -e "  ${FG_GREEN}[6]${NC}  Tmux (terminal manager)"
     echo -e "  ${FG_GREEN}[7]${NC}  Debian (proot-distro)"
-    echo -e "  ${FG_GREEN}[8]${NC}  Google API (rclone + Gmail)"
+    echo -e "  ${FG_GREEN}[8]${NC}  udocker (Docker sin root)"
+    echo -e "  ${FG_GREEN}[9]${NC}  Google API (rclone + Gmail)"
     echo ""
 
     echo -e "${BG_MANTLE}  TODO${NC}"
@@ -339,7 +358,8 @@ procesar_opcion() {
         5) echo -e "\n${FG_YELLOW}Instalando extras...${NC}"; instalar_extras ;;
         6) echo -e "\n${FG_YELLOW}Instalando Tmux...${NC}"; instalar_tmux ;;
         7) echo -e "\n${FG_YELLOW}Instalando Debian...${NC}"; instalar_debian ;;
-        8) echo -e "\n${FG_YELLOW}Instalando Google API...${NC}"; instalar_api_google ;;
+        8) echo -e "\n${FG_YELLOW}Instalando udocker...${NC}"; instalar_udocker ;;
+        9) echo -e "\n${FG_YELLOW}Instalando Google API...${NC}"; instalar_api_google ;;
         t|T)
             echo -e "\n${FG_SAPPHIRE}=== INSTALACION COMPLETA ===${NC}"
             instalar_base || warn "Error en instalar_base"
@@ -350,6 +370,7 @@ procesar_opcion() {
             instalar_extras || warn "Error en instalar_extras"
             instalar_tmux || warn "Error en instalar_tmux"
             instalar_debian || warn "Error en instalar_debian"
+            instalar_udocker || warn "Error en instalar_udocker"
             instalar_api_google || warn "Error en instalar_api_google"
             echo -e "${FG_SAPPHIRE}=== COMPLETADO ===${NC}"
             ;;
