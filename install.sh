@@ -263,7 +263,7 @@ instalar_debian() {
 
     if [ -d "$DEBIAN_DIR" ]; then
         log "Limpiando Debian anterior..."
-        proot-distro remove debian --force 2>/dev/null || true
+        proot-distro remove debian 2>/dev/null || true
         rm -rf "$PREFIX/var/lib/proot-distro/installed-rootfs/debian" 2>/dev/null || true
     fi
 
