@@ -16,9 +16,7 @@ return {
           hide_dotfiles = false,
           hide_gitignored = false,
         },
-        preview = {
-          enabled = true,
-        },
+        enable_preview = true,
       },
       window = {
         width = 60,
