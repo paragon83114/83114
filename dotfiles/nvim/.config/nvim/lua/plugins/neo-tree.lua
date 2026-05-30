@@ -21,7 +21,13 @@ return {
       window = {
         width = 60,
       },
+      default_component_configs = {
+        file_preview = {
+          enable = true,
+        },
+      },
     })
     vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<CR>", { desc = "Toggle file explorer" })
+    vim.keymap.set("n", "z", "<cmd>Neotree focus preview<CR>", { desc = "Focus preview panel" })
   end,
 }
