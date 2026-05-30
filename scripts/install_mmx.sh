@@ -23,4 +23,9 @@ else
     log "mmx ya instalado."
 fi
 
+if [ -f "$PREFIX/bin/mmx" ] && head -1 "$PREFIX/bin/mmx" 2>/dev/null | grep -q '/usr/bin/env'; then
+    log "Corrigiendo shebang de mmx..."
+    sed -i '1s|#!/usr/bin/env node|#!/data/data/com.termux/files/usr/bin/node|' "$PREFIX/bin/mmx"
+fi
+
 log "mmx-cli listo."
