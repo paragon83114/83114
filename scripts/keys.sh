@@ -4,91 +4,59 @@ set -euo pipefail
 cyan='\033[0;36m'
 green='\033[0;32m'
 yellow='\033[1;33m'
-red='\033[0;31m'
 bold='\033[1m'
 reset='\033[0m'
 
 print_header() {
-    echo -e "${bold}${cyan}╔════════════════════════════════════════════════════════════════╗${reset}"
-    echo -e "${bold}${cyan}║${reset}              ${bold}${yellow}COMBINACIONES Y ALIAS - 83114${reset}                   ${bold}${cyan}║${reset}"
-    echo -e "${bold}${cyan}╚════════════════════════════════════════════════════════════════╝${reset}"
-    echo ""
+    echo -e "${bold}${cyan}┌${bold}──────────────────────────────────────┐${reset}"
+    echo -e "${bold}${cyan}│${reset}      ${bold}KEYS & ALIASES - 83114${reset}         ${bold}${cyan}│${reset}"
+    echo -e "${bold}${cyan}└${bold}──────────────────────────────────────┘${reset}"
 }
 
-print_section() {
-    echo -e "\n${bold}${green}━━━ $1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${reset}"
-}
-
-print_key() {
-    printf "  ${bold}${yellow}%-20s${reset}  %s\n" "$1" "$2"
-}
-
-print_alias() {
-    printf "  ${bold}${cyan}%-20s${reset}  %s\n" "$1" "$2"
+print_cols() {
+    local col1="$1" col2="$2" col3="$3"
+    printf "${bold}%-22s${reset} ${yellow}%-22s${reset} ${green}%-22s${reset}\n" "$col1" "$col2" "$col3"
 }
 
 echo ""
 print_header
+echo ""
 
-print_section "ALIAS PRINCIPALES"
-print_alias "ls"          "lsd (mejorado)"
-print_alias "l"           "lsd -l"
-print_alias "ll"          "lsd -lha"
-print_alias "c"           "clear"
-print_alias "v"           "nvim"
-print_alias "f"           "nvim -c 'NvimTreeToggle'"
-print_alias "nano"        "nvim"
-print_alias "oc"          "opencode -c"
-print_alias "t"           "lsd -l --tree --depth 2"
-print_alias "bye"         "kill -9 -1"
-print_alias "m"           "music-shuffle"
-print_alias "ms"          "music-select"
-print_alias "lg"          "lazygit"
-print_alias "h"           "historial (fzf)"
-
-print_section "FUNCIONES"
-print_key "google <texto>"    "Buscar en Google"
-print_key "minimax <query>"  "Buscar con MiniMax AI"
-
-print_section "SCRIPTS (d)"
-print_key "d"              "Ver diario con nvim"
-print_key "d <texto>"      "Añadir entrada al diario"
-print_key "d eval"         "Procesar diario con IA"
-print_key "d today"        "Analizar diario del dia"
-print_key "d del"          "Borrar ultima entrada"
-
-print_section "MUSICA"
-print_key "m"              "Reproduccion aleatoria (mpv --shuffle)"
-print_key "ms"             "Seleccionar y reproducir con fzf"
-
-print_section "OTROS SCRIPTS"
-print_key "gmail-check"    "Verificar correos no leidos"
-print_key "gmail-read"     "Leer correos no leidos"
-print_key "share-send <f>" "Enviar archivo por red"
-print_key "share-get"      "Recibir archivo por red"
-print_key "md2pdf <file>"  "Convertir a PDF (pandoc)"
-print_key "md2epub <file>" "Convertir a EPUB (pandoc)"
-print_key "md2docx <file>" "Convertir a DOCX (pandoc)"
-print_key "lg"             "Interfaz git (lazygit)"
-print_key "install_mmx"    "Instalar mmx-cli"
-print_key "install_antigravity" "Instalar Antigravity CLI"
-
-print_section "FZF - ATAJOS DE TECLADO"
-print_key "Ctrl+R"         "Historial de comandos"
-print_key "Ctrl+T"         "Buscar archivos"
-print_key "Alt+C"          "Cambiar a directorio"
-print_key "Tab"            "Marcar (multi-select)"
-print_key "Enter"          "Seleccionar/Ejecutar"
-print_key "ESC"            "Salir"
-
-print_section "DIARIO (d)"
-print_key "d"              "Ver diario"
-print_key "d \"texto\""    "Nueva entrada"
-print_key "d eval"         "Procesar con IA"
-print_key "d today"        "Resumen del dia"
-print_key "d del"          "Eliminar entrada"
+echo -e "${bold}${cyan}ALIAS${reset}"
+print_cols "ls → lsd" "l → lsd -l" "ll → lsd -lha"
+print_cols "c → clear" "v → nvim" "f → NvimTree"
+print_cols "nano → nvim" "oc → opencode -c" "t → tree 2"
+print_cols "bye → kill -9 -1" "m → shuffle" "ms → select"
+print_cols "lg → lazygit" "h → historial" ""
 
 echo ""
-echo -e "${bold}${cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${reset}"
-echo -e "${yellow}Usa ${bold}Ctrl+R${reset}${yellow} para buscar en el historial o ${bold}h${reset}${yellow} para ver interfaz fzf${reset}"
+echo -e "${bold}${cyan}FUNCIONES${reset}"
+print_cols "google <texto>" "minimax <query>" ""
+
+echo ""
+echo -e "${bold}${cyan}DIARIO (d)${reset}"
+print_cols "d → ver" "d <texto> → entry" "d eval → IA"
+print_cols "d today → analisis" "d del → borrar" ""
+
+echo ""
+echo -e "${bold}${cyan}MUSICA${reset}"
+print_cols "m → shuffle mpv" "ms → fzf select" "" ""
+
+echo ""
+echo -e "${bold}${cyan}SCRIPTS${reset}"
+print_cols "gmail-check" "gmail-read" "share-send"
+print_cols "share-get" "md2pdf" "md2epub"
+print_cols "md2docx" "install_mmx" "install_antigravity"
+
+echo ""
+echo -e "${bold}${cyan}FZF (Ctrl+R)${reset}"
+print_cols "Ctrl+R → history" "Ctrl+T → files" "Alt+C → dirs"
+print_cols "Tab → mark" "Enter → select" "ESC → exit"
+
+echo ""
+echo -e "${bold}${cyan}NAvegacion${reset}"
+print_cols "cd <dir> (zoxide)" "z <dir> (frecuent)" "" ""
+
+echo ""
+echo -e "${cyan}Usa ${bold}h${reset}${cyan} o ${bold}Ctrl+R${reset}${cyan} para historial fzf${reset}"
 echo ""
