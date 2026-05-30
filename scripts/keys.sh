@@ -31,7 +31,7 @@ print_cols "lg → lazygit" "h → historial" ""
 
 echo ""
 echo -e "${bold}${cyan}FUNCIONES${reset}"
-print_cols "google <texto>" "minimax <query>" ""
+print_cols "" "" ""
 
 echo ""
 echo -e "${bold}${cyan}DIARIO (d)${reset}"

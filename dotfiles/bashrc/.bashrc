@@ -14,12 +14,13 @@ google() {
   termux-open-url "https://www.google.com/search?q=${query}"
 }
 
-minimax() {
+mmx() {
   [ $# -eq 0 ] && {
-    echo "Uso: minimax <query>"
+    echo "Uso: mmx <comando> [args...]"
+    echo "Comandos disponibles: search, chat"
     return 1
   }
-  mmx search query --q "$*"
+  command mmx "$@"
 }
 
 __pretty_dir() { echo -n "${PWD/#$HOME/\~}"; }
