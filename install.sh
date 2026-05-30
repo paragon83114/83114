@@ -191,6 +191,16 @@ instalar_vim() {
     instalar_si_falta "neovim"
     instalar_si_falta "git"
 
+    if ! command -v npm &>/dev/null; then
+        log "Instalando nodejs para bash-language-server..."
+        pkg install -y nodejs
+    fi
+
+    if ! command -v bash-language-server &>/dev/null; then
+        log "Instalando bash-language-server..."
+        npm install -g bash-language-server
+    fi
+
     instalar_stow
 
     log "Aplicando dotfiles de Neovim..."
