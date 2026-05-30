@@ -261,14 +261,15 @@ instalar_debian() {
 
     DEBIAN_DIR="$PREFIX/var/lib/proot-distro/installed-rootfs/debian"
 
-    if [ ! -d "$DEBIAN_DIR" ]; then
-        log "Instalando Debian (esto puede tardar)..."
-        proot-distro install debian
-        log "Actualizando Debian..."
-        proot-distro login debian -- sh -c "apt update && apt upgrade -y"
-    else
-        log "Debian ya instalado."
+    if [ -d "$DEBIAN_DIR" ]; then
+        log "Limpiando Debian anterior..."
+        proot-distro remove debian --force 2>/dev/null || true
     fi
+
+    log "Instalando Debian (esto puede tardar)..."
+    proot-distro install debian
+    log "Actualizando Debian..."
+    proot-distro login debian -- sh -c "apt update && apt upgrade -y"
 
     log "Debian instalado."
 }
@@ -276,12 +277,10 @@ instalar_debian() {
 instalar_udocker() {
     log "Instalando udocker..."
 
-    if ! command -v udocker &>/dev/null; then
-        log "Instalando udocker con pkg..."
-        pkg install udocker -y
-    else
-        log "udocker ya instalado. Omitiendo."
-    fi
+    log "Limpiando udocker anterior..."
+    rm -f "$PREFIX/bin/udocker" 2>/dev/null || true
+
+    pkg install udocker -y
 
     log "udocker instalado."
 }
