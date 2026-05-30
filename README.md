@@ -61,7 +61,7 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 ### Scripts
 | Script | Descripcion |
 |--------|-------------|
-| `d` | Ver diario personal con glow |
+| `d` | Ver diario personal con nvim |
 | `d "texto"` | Anadir entrada al diario |
 | `d eval` | Procesar diario con IA |
 | `d del` | Borrar ultima entrada |
@@ -84,7 +84,7 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 | `nano` | nvim |
 | `v` | nvim |
 | `f` | nvim -c "NvimTreeToggle" |
-| `g` | glow -w220 -p |
+
 | `oc` | opencode -c |
 | `t` | lsd -l --tree --depth 2 |
 | `bye` | kill -9 -1 |
@@ -232,7 +232,7 @@ music-shuffle
 
 ### d
 
-Diario personal. Sin args: ver con glow. Con args: anadir entrada.
+Diario personal. Sin args: ver con nvim. Con args: anadir entrada.
 
 ```bash
 d                  # Ver diario

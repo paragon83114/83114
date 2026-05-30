@@ -83,7 +83,6 @@ instalar_base() {
     pkg update -y && pkg upgrade -y -o Dpkg::Options::="--force-confnew"
 
     instalar_si_falta "lsd"
-    instalar_si_falta "glow"
     instalar_si_falta "atuin"
 
     log "Instalando bash-preexec..."

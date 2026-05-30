@@ -15,7 +15,7 @@ if [ ! -f "$diario" ]; then
 fi
 
 if [ $# -eq 0 ]; then
-  [ -s "$diario" ] && glow -w180 -p "$diario" || echo -e "${yellow}Diario vacio. Usa: d \"texto\"${reset}"
+  [ -s "$diario" ] && nvim "$diario" || echo -e "${yellow}Diario vacio. Usa: d \"texto\"${reset}"
   exit 0
 fi
 

@@ -48,7 +48,7 @@ done
 
 ### `d` (diary)
 ```bash
-d              # View with glow
+d              # View with nvim
 d "text"       # Add entry
 d eval         # Process with AI (opencode/deepseek-v4-flash-free)
 d del          # Delete last entry
