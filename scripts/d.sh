@@ -2,7 +2,6 @@
 set -euo pipefail
 
 diario="$HOME/daily.md"
-DAILY_TEMPLATE="https://raw.githubusercontent.com/paragon83114/83114/main/templates/daily.md"
 yellow="\033[1;33m"
 red="\033[1;31m"
 green="\033[1;32m"
@@ -11,7 +10,7 @@ reset="\033[0m"
 cd ~
 
 if [ ! -f "$diario" ]; then
-  curl -s -o "$diario" "$DAILY_TEMPLATE" 2>/dev/null || touch "$diario"
+  cp ~/83114/templates/daily.md "$diario" 2>/dev/null || touch "$diario"
 fi
 
 if [ $# -eq 0 ]; then
