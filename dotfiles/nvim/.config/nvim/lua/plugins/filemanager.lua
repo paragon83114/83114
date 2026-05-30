@@ -6,7 +6,7 @@ return {
   config = function()
     require("nvim-tree").setup({
       sort = { sorter = "case_sensitive" },
-      view = { width = 80 },
+      view = { width = 60 },
       renderer = { group_empty = true },
       filters = { dotfiles = false },
       on_attach = function(bufnr)
