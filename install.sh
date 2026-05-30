@@ -201,6 +201,11 @@ instalar_vim() {
         npm install -g bash-language-server
     fi
 
+    if head -1 "$(command -v bash-language-server)" 2>/dev/null | grep -q '/usr/bin/env'; then
+        log "Corrigiendo shebang de bash-language-server..."
+        sed -i '1s|#!/usr/bin/env node|#!/data/data/com.termux/files/usr/bin/node|' "$(command -v bash-language-server)"
+    fi
+
     instalar_stow
 
     log "Aplicando dotfiles de Neovim..."
