@@ -58,7 +58,7 @@ dotfiles_stow() {
         [ -f "$f" ] || [ -L "$f" ] && rm -f "$f"
     done
 
-    for d in ~/.config/atuin ~/.config/nvim ~/.termux; do
+    for d in ~/.config/nvim ~/.termux; do
         if [ -L "$d" ]; then
             rm -f "$d"
         elif [ -d "$d" ]; then
@@ -83,7 +83,6 @@ instalar_base() {
     pkg update -y && pkg upgrade -y -o Dpkg::Options::="--force-confnew"
 
     instalar_si_falta "lsd"
-    instalar_si_falta "atuin"
 
     log "Instalando bash-preexec..."
     mkdir -p "$HOME/.local/share/bash-preexec"

@@ -1,6 +1,6 @@
 ---
 date: 2026-05-24
-tags: [entorno, terminal, finanzas, api-keys, ideas, tareas-pendientes, contenedores, lazygit, atuin]
+tags: [entorno, terminal, finanzas, api-keys, ideas, tareas-pendientes, contenedores, lazygit, fzf]
 models_evaluated: [gemini, kimi-2.6, deepseek-v4-pro, qwen3.6-plus]
 ---
 

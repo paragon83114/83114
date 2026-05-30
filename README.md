@@ -25,8 +25,7 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
     ├── termux/.termux/
     │   ├── termux.properties
     │   └── font.ttf         # Fuente personalizada
-    ├── atuin/.config/atuin/config.toml
-    └── nvim/.config/nvim/
+    ├── nvim/.config/nvim/
         ├── init.lua          # Bootstrap de lazy.nvim
         └── lua/plugins/
             ├── catppuccin.lua    # Tema Catppuccin Mocha
@@ -40,7 +39,6 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 ### Base
 - **bashrc**: Configuración de Bash con alias y funciones
 - **tmux**: Gestor de terminal multiplexado
-- **atuin**: Historial de comandos mejorado
 - **termux.properties**: Configuración de Termux
 - **font.ttf**: Fuente personalizada para Termux
 
@@ -91,7 +89,7 @@ Sistema de instalación y gestión de dotfiles para Termux usando GNU Stow.
 | `m` | music-shuffle |
 | `ms` | music-select |
 | `lg` | lazygit |
-| `h` | atuin search -i |
+| `h` | history (Ctrl+R con fzf) |
 
 ### Funciones
 | Funcion | Descripcion |

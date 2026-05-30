@@ -2,7 +2,7 @@ export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 EDITOR=nvim
 export PATH="$HOME/.opencode/bin:$HOME/bin:$PATH"
 export HISTTIMEFORMAT="%F %T "
 
-alias ls="lsd" l="lsd -l" ll="lsd -lha" c="clear" nano="nvim" oc="opencode -c" v="nvim" f="nvim -c 'NvimTreeToggle'" t="lsd -l --tree --depth 2" bye="kill -9 -1" m="music-shuffle" ms="music-select" lg="lazygit" h="atuin search -i"
+alias ls="lsd" l="lsd -l" ll="lsd -lha" c="clear" nano="nvim" oc="opencode -c" v="nvim" f="nvim -c 'NvimTreeToggle'" t="lsd -l --tree --depth 2" bye="kill -9 -1" m="music-shuffle" ms="music-select" lg="lazygit"
 
 google() {
   [ $# -eq 0 ] && {
@@ -43,10 +43,7 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash --cmd cd)"
 [ -f "$HOME/.config/fzf/fzf.bash" ] && source "$HOME/.config/fzf/fzf.bash"
 command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
 [ -f "$HOME/.local/share/bash-preexec/bash-preexec.sh" ] && source "$HOME/.local/share/bash-preexec/bash-preexec.sh"
-command -v atuin >/dev/null 2>&1 && eval "$(atuin init bash --disable-up-arrow --disable-ctrl-r)" && {
-  atuin-bind -m emacs '\eh' atuin-search-emacs
-  atuin-bind -m vi-insert '\eh' atuin-search-viins
-}
+h() { __fzf_history__; }
 
 if [ -z "${TMUX:-}" ] && ! pgrep -x tmux >/dev/null; then
   tmux new-session -A -s main

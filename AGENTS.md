@@ -16,7 +16,7 @@ stow --target="$HOME" */   # Deploy all packages
 stow --target="$HOME" -D <package>  # Remove a package
 ```
 
-packages: `bashrc`, `tmux`, `termux`, `atuin`, `nvim`
+packages: `bashrc`, `tmux`, `termux`, `nvim`
 
 ## Adding New Dotfiles
 
