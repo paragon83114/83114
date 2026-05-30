@@ -141,12 +141,11 @@ instalar_opencode() {
     instalar_si_falta "nodejs" "npm"
     instalar_si_falta "ripgrep" "rg"
 
-    if [ -f "$HOME/.opencode/bin/opencode" ] || [ -f "$HOME/.opencode/bin/opencode-bin" ]; then
-        log "OpenCode ya instalado. Omitiendo."
-    else
-        rm -rf "$HOME/.opencode"
-        curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path
-    fi
+    log "Limpiando OpenCode anterior..."
+    rm -rf "$HOME/.opencode"
+    rm -rf "$HOME/.cache/opencode"
+
+    curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path
 
     BIN_DIR="$HOME/.opencode/bin"
     [ -f "$BIN_DIR/opencode" ] || [ -f "$BIN_DIR/opencode-bin" ] || error "No se encontro opencode"
@@ -158,8 +157,7 @@ instalar_opencode() {
     GLIBC_LD="$PREFIX/glibc/lib/ld-linux-aarch64.so.1"
     [ -f "$GLIBC_LD" ] || error "No se encontro linker glibc."
 
-    if ! grep -q "unset LD_PRELOAD" "$BIN_DIR/opencode" 2>/dev/null; then
-        cat > "$BIN_DIR/opencode" << 'EOF'
+    cat > "$BIN_DIR/opencode" << 'EOF'
 #!/data/data/com.termux/files/usr/bin/bash
 unset LD_PRELOAD LD_LIBRARY_PATH
 export JSC_useJIT=false BUN_JIT=0
@@ -167,13 +165,10 @@ exec "$PREFIX/glibc/lib/ld-linux-aarch64.so.1" \
     --library-path "$PREFIX/glibc/lib" \
     "$HOME/.opencode/bin/opencode-bin" "$@"
 EOF
-        chmod +x "$BIN_DIR/opencode"
-    fi
+    chmod +x "$BIN_DIR/opencode"
 
     mkdir -p "$HOME/.cache/opencode/bin"
-    if [ ! -f "$HOME/.cache/opencode/bin/rg" ]; then
-        cp "$PREFIX/bin/rg" "$HOME/.cache/opencode/bin/rg"
-    fi
+    cp "$PREFIX/bin/rg" "$HOME/.cache/opencode/bin/rg" 2>/dev/null || true
 
     log "OpenCode instalado."
 }
@@ -183,6 +178,10 @@ instalar_tmux() {
 
     instalar_si_falta "tmux"
     instalar_si_falta "python"
+
+    log "Limpiando Tmux anterior..."
+    rm -f "$HOME/.tmux.conf"
+    rm -f "$HOME/.tmux.conf.bak" 2>/dev/null || true
 
     log "Tmux instalado."
 }
@@ -232,6 +231,12 @@ instalar_vim() {
 
 instalar_extras() {
     log "Instalando extras..."
+
+    log "Limpiando extras anteriores..."
+    rm -rf "$HOME/.config/fzf"
+    rm -rf "$HOME/.local/state/zoxide"
+    rm -rf "$HOME/.config/zoxide"
+    rm -rf "$HOME/.config/mpv"
 
     instalar_si_falta "fzf"
     instalar_si_falta "zoxide"
