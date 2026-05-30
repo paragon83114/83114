@@ -213,7 +213,8 @@ instalar_vim() {
     stow --target="$HOME" nvim
     cd "$SCRIPT_DIR"
 
-    nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
+    log "Sincronizando plugins..."
+    nvim --headless "+Lazy! sync" +qa
 
     log "Neovim instalado."
 }
