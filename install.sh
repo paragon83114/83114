@@ -264,6 +264,7 @@ instalar_debian() {
     if [ -d "$DEBIAN_DIR" ]; then
         log "Limpiando Debian anterior..."
         proot-distro remove debian --force 2>/dev/null || true
+        rm -rf "$PREFIX/var/lib/proot-distro/installed-rootfs/debian" 2>/dev/null || true
     fi
 
     log "Instalando Debian (esto puede tardar)..."
@@ -279,6 +280,10 @@ instalar_udocker() {
 
     log "Limpiando udocker anterior..."
     rm -f "$PREFIX/bin/udocker" 2>/dev/null || true
+    rm -f "$PREFIX/bin/udocker.py" 2>/dev/null || true
+    rm -rf "$HOME/.udocker" 2>/dev/null || true
+    rm -rf "$HOME/.local/share/udocker" 2>/dev/null || true
+    rm -rf "$HOME/.cache/udocker" 2>/dev/null || true
 
     pkg install udocker -y
 
