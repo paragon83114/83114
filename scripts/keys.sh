@@ -1,62 +1,59 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cyan='\033[0;36m'
-green='\033[0;32m'
-yellow='\033[1;33m'
 bold='\033[1m'
+cyan='\033[0;36m'
+yellow='\033[1;33m'
+green='\033[0;32m'
+dim='\033[2m'
 reset='\033[0m'
 
-print_header() {
-    echo -e "${bold}${cyan}┌${bold}──────────────────────────────────────┐${reset}"
-    echo -e "${bold}${cyan}│${reset}      ${bold}KEYS & ALIASES - 83114${reset}         ${bold}${cyan}│${reset}"
-    echo -e "${bold}${cyan}└${bold}──────────────────────────────────────┘${reset}"
-}
-
-print_cols() {
-    local col1="$1" col2="$2" col3="$3"
-    printf "${bold}%-22s${reset} ${yellow}%-22s${reset} ${green}%-22s${reset}\n" "$col1" "$col2" "$col3"
+cols() { printf "${bold}%-24s${reset} ${yellow}%-24s${reset} ${green}%-24s${reset}\n" "$1" "$2" "$3"; }
+sec() { echo -e "\n${bold}${cyan}━━━ $1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${reset}"; }
+hdr() {
+    echo -e "${bold}${cyan}┌─────────────────────────────────────────────┐${reset}"
+    echo -e "${bold}${cyan}│${reset}        ${bold}KEYS & ALIASES  •  83114${reset}             ${bold}${cyan}│${reset}"
+    echo -e "${bold}${cyan}└─────────────────────────────────────────────┘${reset}"
 }
 
 echo ""
-print_header
-echo ""
+hdr
 
-echo -e "${bold}${cyan}ALIAS${reset}"
-print_cols "ls → lsd" "l → lsd -l" "ll → lsd -lha"
-print_cols "c → clear" "v → nvim" "f → NvimTree"
-print_cols "nano → nvim" "oc → opencode -c" "t → tree 2"
-print_cols "bye → kill -9 -1" "m → shuffle" "ms → select"
-print_cols "lg → lazygit" "h → historial" ""
+sec "NAVEGACION"
+cols "cd <dir>"        "zoxide intelligent"  "h | Ctrl+R historial"
 
-echo ""
-echo -e "${bold}${cyan}FUNCIONES${reset}"
-print_cols "" "" ""
+sec "ALIAS BASICOS"
+cols "ls / l / ll"     "lsd美化列表"         "t tree 2 niveles"
+cols "c"               "clear"              "bye kill -1"
 
-echo ""
-echo -e "${bold}${cyan}DIARIO (d)${reset}"
-print_cols "d → ver" "d <texto> → entry" "d eval → IA"
-print_cols "d today → analisis" "d del → borrar" ""
+sec "EDITORES"
+cols "v"               "nvim"               "f NvimTree toggle"
+cols "oc"              "opencode -c"        ""
 
-echo ""
-echo -e "${bold}${cyan}MUSICA${reset}"
-print_cols "m → shuffle mpv" "ms → fzf select" "" ""
+sec "MUSICA"
+cols "m"               "mpv shuffle"        "ms fzf + play"
 
-echo ""
-echo -e "${bold}${cyan}SCRIPTS${reset}"
-print_cols "gmail-check" "gmail-read" "share-send"
-print_cols "share-get" "md2pdf" "md2epub"
-print_cols "md2docx" "install_mmx" "install_antigravity"
+sec "GIT"
+cols "lg"              "lazygit"            ""
 
-echo ""
-echo -e "${bold}${cyan}FZF (Ctrl+R)${reset}"
-print_cols "Ctrl+R → history" "Ctrl+T → files" "Alt+C → dirs"
-print_cols "Tab → mark" "Enter → select" "ESC → exit"
+sec "DIARIO (d)"
+cols "d"               "ver diario"         "d <texto> entrada"
+cols "d eval"          "procesar IA"        "d today analizar"
+cols "d del"           "borrar entrada"     ""
 
-echo ""
-echo -e "${bold}${cyan}NAvegacion${reset}"
-print_cols "cd <dir> (zoxide)" "z <dir> (frecuent)" "" ""
+sec "SCRIPTS UTILITARIOS"
+cols "gmail-check"      "correos no leidos"  "gmail-read leer"
+cols "share-send"      "enviar archivo"     "share-get recibir"
+cols "md2pdf"           "→ PDF"              "md2epub → EPUB"
+cols "md2docx"          "→ DOCX"             ""
 
-echo ""
-echo -e "${cyan}Usa ${bold}h${reset}${cyan} o ${bold}Ctrl+R${reset}${cyan} para historial fzf${reset}"
+sec "INSTALADORES"
+cols "install_mmx"      "mmx-cli"            "install_antigravity"
+
+sec "FZF atajos"
+cols "Ctrl+T"          "buscar archivos"    "Ctrl+R historial"
+cols "Alt+C"           "cd directorio"      "Tab marcar"
+cols "Enter"           "seleccionar"        "ESC salir"
+
+echo -e "\n${dim}Usa h o Ctrl+R para ver historial con fzf${reset}"
 echo ""
