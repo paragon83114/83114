@@ -58,6 +58,10 @@ dotfiles_stow() {
         [ -f "$f" ] || [ -L "$f" ] && rm -f "$f"
     done
 
+    if [ -L "$HOME/.config" ]; then
+        rm -f "$HOME/.config"
+    fi
+
     for d in ~/.config/nvim ~/.termux; do
         if [ -L "$d" ]; then
             rm -f "$d"
