@@ -144,6 +144,8 @@ instalar_opencode() {
     log "Limpiando OpenCode anterior..."
     rm -rf "$HOME/.opencode"
     rm -rf "$HOME/.cache/opencode"
+    rm -rf "$HOME/.config/opencode"
+    rm -rf "$HOME/.local/share/opencode"
 
     curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path
 
@@ -233,10 +235,18 @@ instalar_extras() {
     log "Instalando extras..."
 
     log "Limpiando extras anteriores..."
+    rm -rf "$HOME/.config/atuin"
     rm -rf "$HOME/.config/fzf"
+    rm -rf "$HOME/.config/glow"
+    rm -rf "$HOME/.config/lazygit"
+    rm -rf "$HOME/.config/mpv"
+    rm -rf "$HOME/.config/rclone"
+    rm -rf "$HOME/.local/share/atuin"
     rm -rf "$HOME/.local/state/zoxide"
     rm -rf "$HOME/.config/zoxide"
-    rm -rf "$HOME/.config/mpv"
+    rm -f "$HOME/.fzf.bash"
+    rm -f "$HOME/.fzf.zsh"
+    rm -f "$HOME/.termux.bash"
 
     instalar_si_falta "fzf"
     instalar_si_falta "zoxide"
