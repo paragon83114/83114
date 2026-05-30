@@ -233,23 +233,6 @@ instalar_extras() {
     log "Extras instalados."
 }
 
-instalar_mmx() {
-    log "Instalando mmx-cli..."
-
-    if ! command -v npm &>/dev/null; then
-        warn "npm no encontrado. Instalando nodejs primero..."
-        instalar_si_falta "nodejs" "npm"
-    fi
-
-    if ! command -v mmx &>/dev/null; then
-        npm install -g mmx-cli
-    else
-        log "mmx ya instalado. Omitiendo."
-    fi
-
-    log "mmx-cli instalado."
-}
-
 instalar_debian() {
     log "Instalando Debian..."
 
@@ -331,13 +314,12 @@ mostrar_menu() {
     echo -e "  ${FG_GREEN}[3]${NC}  OpenCode (IA CLI)"
     echo -e "  ${FG_GREEN}[4]${NC}  Neovim (editor)"
     echo -e "  ${FG_GREEN}[5]${NC}  Extras (fzf, zoxide, mpv, yt-dlp)"
-    echo -e "  ${FG_GREEN}[6]${NC}  mmx-cli (MiniMax AI)"
     echo ""
 
     echo -e "${BG_DARK}  SERVICIOS${NC}"
-    echo -e "  ${FG_GREEN}[7]${NC}  Tmux (terminal manager)"
-    echo -e "  ${FG_GREEN}[8]${NC}  Debian (proot-distro)"
-    echo -e "  ${FG_GREEN}[9]${NC}  Google API (rclone + Gmail)"
+    echo -e "  ${FG_GREEN}[6]${NC}  Tmux (terminal manager)"
+    echo -e "  ${FG_GREEN}[7]${NC}  Debian (proot-distro)"
+    echo -e "  ${FG_GREEN}[8]${NC}  Google API (rclone + Gmail)"
     echo ""
 
     echo -e "${BG_MANTLE}  TODO${NC}"
@@ -355,10 +337,9 @@ procesar_opcion() {
         3) echo -e "\n${FG_YELLOW}Instalando OpenCode...${NC}"; instalar_opencode ;;
         4) echo -e "\n${FG_YELLOW}Instalando Neovim...${NC}"; instalar_vim ;;
         5) echo -e "\n${FG_YELLOW}Instalando extras...${NC}"; instalar_extras ;;
-        6) echo -e "\n${FG_YELLOW}Instalando mmx-cli...${NC}"; instalar_mmx ;;
-        7) echo -e "\n${FG_YELLOW}Instalando Tmux...${NC}"; instalar_tmux ;;
-        8) echo -e "\n${FG_YELLOW}Instalando Debian...${NC}"; instalar_debian ;;
-        9) echo -e "\n${FG_YELLOW}Instalando Google API...${NC}"; instalar_api_google ;;
+        6) echo -e "\n${FG_YELLOW}Instalando Tmux...${NC}"; instalar_tmux ;;
+        7) echo -e "\n${FG_YELLOW}Instalando Debian...${NC}"; instalar_debian ;;
+        8) echo -e "\n${FG_YELLOW}Instalando Google API...${NC}"; instalar_api_google ;;
         t|T)
             echo -e "\n${FG_SAPPHIRE}=== INSTALACION COMPLETA ===${NC}"
             instalar_base || warn "Error en instalar_base"
@@ -367,7 +348,6 @@ procesar_opcion() {
             instalar_opencode || warn "Error en instalar_opencode"
             instalar_vim || warn "Error en instalar_vim"
             instalar_extras || warn "Error en instalar_extras"
-            instalar_mmx || warn "Error en instalar_mmx"
             instalar_tmux || warn "Error en instalar_tmux"
             instalar_debian || warn "Error en instalar_debian"
             instalar_api_google || warn "Error en instalar_api_google"
